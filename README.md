@@ -53,12 +53,10 @@ This map helps new contributors quickly understand the codebase layout, see how 
 │     ml-worker/ (Processing)     │
 │  Python 3.11 Timetable OCR      │
 └─────────────────────────────────┘
-                 ▲
-                 │  References & Specs
-┌────────────────┴────────────────┐
-│      docs/ (Documentation)      │
-│  System Designs, HLD, LLD       │
-└─────────────────────────────────┘
+                 
+Documentation & specifications (docs/):
+  - System design (HLD/LLD)
+  - Component guidance and contributor references
 ```
 
 ### Directory Breakdown
