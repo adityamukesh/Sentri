@@ -36,35 +36,16 @@ The app should stay simple and cheap to run:
 
 This map helps new contributors quickly understand the codebase layout, see how the core components connect, and identify where to make changes before picking up an issue.
 
-```
-┌─────────────────────────────────┐
-│          app/ (Client)          │
-│  Expo React Native (iOS/Android)│
-└────────────────┬────────────────┘
-                 │  REST API (HTTP)
-                 ▼
-┌─────────────────────────────────┐
-│       backend/ (API Layer)      │
-│     Java 17 + Spring Boot       │
-└────────────────┬────────────────┘
-                 │  OCR / Extraction Jobs
-                 ▼
-┌─────────────────────────────────┐
-│     ml-worker/ (Processing)     │
-│  Python 3.11 Timetable OCR      │
-└─────────────────────────────────┘
-                 
-Documentation & specifications (docs/):
-  - System design (HLD/LLD)
-  - Component guidance and contributor references
-```
+The mobile app calls the Spring Boot REST API over HTTP. The backend stores uploads and timetable entries in PostgreSQL. The Python worker provides OCR extraction and payload normalization, but the backend-to-worker processing step is not wired end to end yet.
+
+Design specifications and contributor references live in `docs/`.
 
 ### Directory Breakdown
 
 | Directory | Tech Stack | Role & Purpose | Where to Make Changes |
 | :--- | :--- | :--- | :--- |
-| [`app/`](app/) | Expo, React Native, TypeScript | Cross-platform mobile frontend | UI components, screen layouts, client-side state, tab navigation, and camera/gallery upload flows. |
-| [`backend/`](backend/) | Java 17, Spring Boot, PostgreSQL | Core API, data persistence, and orchestration | REST endpoints, business logic, user auth, database entities/migrations, and worker coordination. |
+| [`app/`](app/) | Expo, React Native, JavaScript/JSX, TypeScript | Cross-platform mobile frontend | UI components, screen layouts, client-side state, tab navigation, and camera/gallery upload flows. |
+| [`backend/`](backend/) | Java 17, Spring Boot, PostgreSQL | Core API, data persistence, and orchestration | REST endpoints, business logic, user auth, database entities/migrations, and future worker integration. |
 | [`ml-worker/`](ml-worker/) | Python 3.11, Pytest | OCR extraction and timetable normalization | OCR image parsing, tabular schedule extraction, payload normalization, and worker unit tests. |
 | [`docs/`](docs/) | Markdown | Architectural blueprints, guidelines, and specifications | System designs (HLD/LLD), domain logic specifications, animation guidelines, and onboarding guides. |
 
