@@ -2,7 +2,7 @@
 
 Sentri is a zero-budget cross-platform student companion for Army Institute of Technology.
 
-[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](CONTRIBUTING.md)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](.github/CONTRIBUTING.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 This repository is currently split into 3 working parts:
@@ -32,19 +32,59 @@ The app should stay simple and cheap to run:
 - Spring Boot handles the main API and persistence
 - Python is used only where it helps most: OCR and deterministic parsing
 
+## Repository Architecture Map
+
+This map helps new contributors quickly understand the codebase layout, see how the core components connect, and identify where to make changes before picking up an issue.
+
+```
+┌─────────────────────────────────┐
+│          app/ (Client)          │
+│  Expo React Native (iOS/Android)│
+└────────────────┬────────────────┘
+                 │  REST API (HTTP)
+                 ▼
+┌─────────────────────────────────┐
+│       backend/ (API Layer)      │
+│     Java 17 + Spring Boot       │
+└────────────────┬────────────────┘
+                 │  OCR / Extraction Jobs
+                 ▼
+┌─────────────────────────────────┐
+│     ml-worker/ (Processing)     │
+│  Python 3.11 Timetable OCR      │
+└─────────────────────────────────┘
+                 ▲
+                 │  References & Specs
+┌────────────────┴────────────────┐
+│      docs/ (Documentation)      │
+│  System Designs, HLD, LLD       │
+└─────────────────────────────────┘
+```
+
+### Directory Breakdown
+
+| Directory | Tech Stack | Role & Purpose | Where to Make Changes |
+| :--- | :--- | :--- | :--- |
+| [`app/`](app/) | Expo, React Native, TypeScript | Cross-platform mobile frontend | UI components, screen layouts, client-side state, tab navigation, and camera/gallery upload flows. |
+| [`backend/`](backend/) | Java 17, Spring Boot, PostgreSQL | Core API, data persistence, and orchestration | REST endpoints, business logic, user auth, database entities/migrations, and worker coordination. |
+| [`ml-worker/`](ml-worker/) | Python 3.11, Pytest | OCR extraction and timetable normalization | OCR image parsing, tabular schedule extraction, payload normalization, and worker unit tests. |
+| [`docs/`](docs/) | Markdown | Architectural blueprints, guidelines, and specifications | System designs (HLD/LLD), domain logic specifications, animation guidelines, and onboarding guides. |
+
 ## Architecture
 
-### Documentation
+### Documentation & References
 
-- HLD: [docs/system-design-hld.md](/Users/sahilkumarsingh/Desktop/SENTRI/docs/system-design-hld.md)
-- LLD: [docs/system-design-lld.md](/Users/sahilkumarsingh/Desktop/SENTRI/docs/system-design-lld.md)
-- Home AI logic: [docs/ai-logic-home-timetable.md](/Users/sahilkumarsingh/Desktop/SENTRI/docs/ai-logic-home-timetable.md)
-- Myspace AI logic: [docs/ai-logic-myspace.md](/Users/sahilkumarsingh/Desktop/SENTRI/docs/ai-logic-myspace.md)
-- Myspace indexing pipeline: [docs/myspace-indexing-pipeline.md](/Users/sahilkumarsingh/Desktop/SENTRI/docs/myspace-indexing-pipeline.md)
-- Contribution workflow: [CONTRIBUTING.md](/Users/sahilkumarsingh/Desktop/SENTRI/CONTRIBUTING.md)
-- Code of conduct: [CODE_OF_CONDUCT.md](/Users/sahilkumarsingh/Desktop/SENTRI/CODE_OF_CONDUCT.md)
-- Security policy: [SECURITY.md](/Users/sahilkumarsingh/Desktop/SENTRI/SECURITY.md)
-- Support policy: [SUPPORT.md](/Users/sahilkumarsingh/Desktop/SENTRI/SUPPORT.md)
+For detailed design specifications, consult the existing architecture documents:
+
+- **System Architecture (HLD)**: [docs/system-design-hld.md](docs/system-design-hld.md)
+- **Component Design (LLD)**: [docs/system-design-lld.md](docs/system-design-lld.md)
+- **Contribution Workflow**: [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md)
+- **Home AI Logic**: [docs/ai-logic-home-timetable.md](docs/ai-logic-home-timetable.md)
+- **Myspace AI Logic**: [docs/ai-logic-myspace.md](docs/ai-logic-myspace.md)
+- **Myspace Indexing Pipeline**: [docs/myspace-indexing-pipeline.md](docs/myspace-indexing-pipeline.md)
+- **Code of Conduct**: [.github/CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md)
+- **Security Policy**: [.github/SECURITY.md](.github/SECURITY.md)
+- **Support Policy**: [.github/SUPPORT.md](.github/SUPPORT.md)
 
 ### Performance Optimizations
 
