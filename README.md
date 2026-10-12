@@ -36,7 +36,7 @@ The app should stay simple and cheap to run:
 
 This map helps new contributors quickly understand the codebase layout, see how the core components connect, and identify where to make changes before picking up an issue.
 
-The mobile app calls the Spring Boot REST API over HTTP. The backend stores uploads and timetable entries in PostgreSQL. The Python worker provides OCR extraction and payload normalization, but the backend-to-worker processing step is not wired end to end yet.
+The mobile app calls the Spring Boot REST API over HTTP. The backend stores upload metadata and timetable entries in PostgreSQL; screenshot files live in the configured upload directory. The Python worker provides OCR extraction and payload normalization, but the backend-to-worker processing step is not wired end to end yet.
 
 Design specifications and contributor references live in `docs/`.
 
@@ -44,6 +44,7 @@ Design specifications and contributor references live in `docs/`.
 flowchart LR
     app["app/: Expo client"] -->|HTTP| backend["backend/: Spring Boot API"]
     backend --> database[(PostgreSQL)]
+    backend --> files["Screenshot files: upload directory"]
     backend -. planned upload processing .-> worker["ml-worker/: OCR and normalization"]
     worker -. planned normalized payload .-> backend
 ```
