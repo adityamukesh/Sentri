@@ -40,13 +40,21 @@ The mobile app calls the Spring Boot REST API over HTTP. The backend stores uplo
 
 Design specifications and contributor references live in `docs/`.
 
+```mermaid
+flowchart LR
+    app["app/: Expo client"] -->|HTTP| backend["backend/: Spring Boot API"]
+    backend --> database[(PostgreSQL)]
+    backend -. planned upload processing .-> worker["ml-worker/: OCR and normalization"]
+    worker -. planned normalized payload .-> backend
+```
+
 ### Directory Breakdown
 
 | Directory | Tech Stack | Role & Purpose | Where to Make Changes |
 | :--- | :--- | :--- | :--- |
-| [`app/`](app/) | Expo, React Native, JavaScript/JSX, TypeScript | Cross-platform mobile frontend | UI components, screen layouts, client-side state, tab navigation, and camera/gallery upload flows. |
-| [`backend/`](backend/) | Java 17, Spring Boot, PostgreSQL | Core API, data persistence, and orchestration | REST endpoints, business logic, user auth, database entities/migrations, and future worker integration. |
-| [`ml-worker/`](ml-worker/) | Python 3.11, Pytest | OCR extraction and timetable normalization | OCR image parsing, tabular schedule extraction, payload normalization, and worker unit tests. |
+| [`app/`](app/) | Expo, React Native, JavaScript/JSX, TypeScript | Cross-platform mobile frontend | [Screens](app/src/screens/), [shared components](app/src/components/), [feature logic](app/src/features/), and [API/storage helpers](app/src/lib/). |
+| [`backend/`](backend/) | Java 17, Spring Boot, PostgreSQL | Core API, data persistence, and orchestration | [Controllers](backend/src/main/java/com/sentri/backend/controller/), [services](backend/src/main/java/com/sentri/backend/service/), [entities](backend/src/main/java/com/sentri/backend/domain/), and [repositories](backend/src/main/java/com/sentri/backend/repository/). |
+| [`ml-worker/`](ml-worker/) | Python 3.11, Pytest | OCR extraction and timetable normalization | [OCR and parsing pipeline](ml-worker/src/sentri_worker/), [worker tests](ml-worker/tests/), and [worker contributor guide](ml-worker/CONTRIBUTING.md). |
 | [`docs/`](docs/) | Markdown | Architectural blueprints, guidelines, and specifications | System designs (HLD/LLD), domain logic specifications, animation guidelines, and onboarding guides. |
 
 ## Architecture
